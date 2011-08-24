@@ -18,7 +18,8 @@ More of a description to come.""",
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          # -*- Extra requirements: -*-
+          "sqlalchemy",
+          "zope.sqlalchemy",
       ],
       entry_points="""
       # -*- Entry points: -*-
