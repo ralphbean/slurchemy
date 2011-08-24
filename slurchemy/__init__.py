@@ -21,9 +21,9 @@ def init_model(engine):
     DBSession.configure(bind=engine)
 
 
-from slurchemy.base import Cluster, User
+from slurchemy.base import Cluster, User, TXN, QOS
 __all__ = [
-    Cluster, User,
+    Cluster, User, TXN, QOS,
     DBSession, DeclarativeBase, metadata, init_model
 ]
 
