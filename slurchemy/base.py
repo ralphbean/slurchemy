@@ -29,3 +29,13 @@ class Cluster(DeclarativeBase):
 
     def __unicode__(self):
         return unicode(self.name)
+
+
+class User(DeclarativeBase):
+    __tablename__ = 'user_table'
+
+    creation_time = Column(DateTime, nullable=False, default=None)
+    mod_time = Column(DateTime, nullable=False, default=0)
+    deleted = Column(Integer, nullable=True, default=0)
+    name = Column(Unicode(256), nullable=False, primary_key=True, default=None)
+    admin_level = Column(Integer, nullable=False, default=1)
