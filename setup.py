@@ -3,13 +3,16 @@ import sys, os
 
 version = '0.1'
 
+with open(os.sep.join(__file__.split(os.sep)[:-1] + ["README.rst"])) as f:
+    long_description = f.read().split(".. split here")[1]
+
+
 setup(name='slurchemy',
       version=version,
       description="SQLAlchemy bindings for your slurmdbd (SLURM database)",
-      long_description="""\
-More of a description to come.""",
+      long_description=long_description,
       classifiers=[], # Get strings from http://pypi.python.org/pypi?%3Aaction=list_classifiers
-      keywords='',
+      keywords='slurm slurmdbd sqlalchemy',
       author='Ralph Bean',
       author_email='ralph.bean@gmail.com',
       url='http://github.com/ralphbean/slurchemy',

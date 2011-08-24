@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 
+import os
 from sqlalchemy.orm import scoped_session, sessionmaker
 from sqlalchemy.ext.declarative import declarative_base
 from zope.sqlalchemy import ZopeTransactionExtension
@@ -23,3 +24,6 @@ def init_model(engine):
 __all__ = [
     DBSession, DeclarativeBase, metadata, init_model
 ]
+
+with open(os.sep.join(__file__.split(os.sep)[:-2] + ["README.rst"])) as f:
+    __doc__ = f.read().split(".. split here")[1]
