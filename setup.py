@@ -21,6 +21,7 @@ setup(name='slurchemy',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
+          "MySQL-python",
           "sqlalchemy",
           "zope.sqlalchemy",
       ],

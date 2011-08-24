@@ -9,3 +9,4 @@ build
 .hg*
 htmlcov
 *.pdf
+test-script.py

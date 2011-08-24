@@ -32,12 +32,12 @@ with::
     StorageLoc=slurmdb
 
 
-Then you can run::
+Then in python you can do::
 
-    $ python
-    >>> import sqlalchemy, slurchemy
-    >>> engine = create_engine('mysql:///slurm:pass@mysql.example.org/slurmdb')
-    >>> slurchemy.init_model(engine)
-    >>> accounts = slurchemy.Account.query.all()
+    import slurchemy
+    from sqlalchemy import create_engine
+    engine = create_engine('mysql://slurm:pass@mysql.example.org/slurmdb')
+    slurchemy.init_model(engine)
+    clusters = slurchemy.Cluster.query.all()
 
 
