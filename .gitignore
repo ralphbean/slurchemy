@@ -1,0 +1,10 @@
+*.egg*
+.coverage
+*.pyc
+*~
+*.swp
+*.rej
+dist
+build
+.hg*
+htmlcov
