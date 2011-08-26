@@ -9,6 +9,11 @@ from sqlalchemy.orm import relation, backref
 
 from slurchemy import DeclarativeBase, metadata, DBSession
 
+# XXX
+# TODO - Use reflection.
+#   http://reliablybroken.com/b/2008/06/choosing-sqlalchemy-over-django/
+# XXX
+
 
 class Cluster(DeclarativeBase):
     __tablename__ = 'cluster_table'
