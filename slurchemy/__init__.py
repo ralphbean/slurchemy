@@ -29,12 +29,14 @@ def init_model(engine):
 
 from slurchemy.base import (
     AccountCoord, Account, TableDefinition,
-    Cluster, QOS, User, TXN
+    Cluster, QOS, User, TXN,
+    per_cluster_models,
 )
 
 __all__ = [
     AccountCoord, Account, TableDefinition,
     Cluster, User, TXN, QOS,
+    per_cluster_models,
     DBSession, init_model
 ]
 
