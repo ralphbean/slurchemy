@@ -31,12 +31,14 @@ from slurchemy.reflect import (
     AccountCoord, Account, TableDefinition,
     Cluster, QOS, User, TXN,
     per_cluster_models,
+    per_cluster_models_d,
 )
 
 __all__ = [
     AccountCoord, Account, TableDefinition,
     Cluster, User, TXN, QOS,
     per_cluster_models,
+    per_cluster_models_d,
     DBSession, init_model
 ]
 

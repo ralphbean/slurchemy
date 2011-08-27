@@ -64,7 +64,8 @@ per_cluster_suffixes = [
     'wckey_usage_month_table',
 ]
 
-per_cluster_models = {}
+per_cluster_models_d = {}
+per_cluster_models = []
 
 def tablename2CamelCase(name):
     return name.replace('_', ' ').title().replace(' ', '')[:-5]
@@ -84,7 +85,7 @@ def init_model(engine):
     for cluster in Cluster.query.all():
         clustername = cluster.name
         print "Initializing models for cluster", clustername
-        per_cluster_models[clustername] = {}
+        per_cluster_models_d[clustername] = {}
         for suffix in per_cluster_suffixes:
             table_name = clustername + '_' + suffix
             model_name = tablename2CamelCase(table_name)
@@ -93,7 +94,8 @@ def init_model(engine):
             try:
                 table = Table(table_name, metadata,autoload=True)
                 mapper(obj, table)
-                per_cluster_models[clustername][model_name] = obj
+                per_cluster_models_d[clustername][model_name] = obj
+                per_cluster_models.append(obj)
             except sqlalchemy.exc.ArgumentError as e:
                 print "** Failed to init", model_name, table_name
                 print str(e)
