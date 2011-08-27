@@ -1,30 +1,41 @@
 # -*- coding: utf-8 -*-
 
 import os
-from sqlalchemy.orm import scoped_session, sessionmaker
-from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy.orm import scoped_session, sessionmaker, class_mapper
 from zope.sqlalchemy import ZopeTransactionExtension
 
 maker = sessionmaker(autoflush=False, autocommit=False,
                      extension=ZopeTransactionExtension())
 DBSession = scoped_session(maker)
 
-DeclarativeBase = declarative_base()
+class Base(object):
+    def __unicode__(self):
+        """ Default unicode representation of a model.  Very verbose. """
+        return u", ".join([
+            "%s: %s" % (p.key, getattr(self, p.key))
+            for p in class_mapper(type(self)).iterate_properties
+        ])
 
-DeclarativeBase.query = DBSession.query_property()
+Base.query = DBSession.query_property()
 
-metadata = DeclarativeBase.metadata
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model."""
 
+    import slurchemy.base
     DBSession.configure(bind=engine)
+    slurchemy.base.init_model(engine)
 
 
-from slurchemy.base import Cluster, User, TXN, QOS
+from slurchemy.base import (
+    AccountCoord, Account, TableDefinition,
+    Cluster, QOS, User, TXN
+)
+
 __all__ = [
+    AccountCoord, Account, TableDefinition,
     Cluster, User, TXN, QOS,
-    DBSession, DeclarativeBase, metadata, init_model
+    DBSession, init_model
 ]
 
 with open(os.sep.join(__file__.split(os.sep)[:-2] + ["README.rst"])) as f:
