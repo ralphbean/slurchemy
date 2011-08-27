@@ -10,6 +10,30 @@ from sqlalchemy.orm import relation, backref
 
 from slurchemy import Base
 
+per_cluster_suffixes = [
+    'assoc_table',
+    'assoc_usage_day_table',
+    'assoc_usage_hour_table',
+    'assoc_usage_month_table',
+    'event_table',
+    'job_table',
+    'last_ran_table',
+    'resv_table',
+    'step_table',
+    'suspend_table',
+    'usage_day_table',
+    'usage_hour_table',
+    'usage_month_table',
+    'wckey_table',
+    'wckey_usage_day_table',
+    'wckey_usage_hour_table',
+    'wckey_usage_month_table',
+]
+
+per_cluster_models_d = {}
+per_cluster_models = []
+models = {}
+
 
 class AccountCoord(Base):
     pass
@@ -44,28 +68,6 @@ mappings = [
     (User, 'user_table'),
     (TXN, 'txn_table'),
 ]
-per_cluster_suffixes = [
-    'assoc_table',
-    'assoc_usage_day_table',
-    'assoc_usage_hour_table',
-    'assoc_usage_month_table',
-    'event_table',
-    'job_table',
-    'last_ran_table',
-    'resv_table',
-    'step_table',
-    'suspend_table',
-    'usage_day_table',
-    'usage_hour_table',
-    'usage_month_table',
-    'wckey_table',
-    'wckey_usage_day_table',
-    'wckey_usage_hour_table',
-    'wckey_usage_month_table',
-]
-
-per_cluster_models_d = {}
-per_cluster_models = []
 
 def tablename2CamelCase(name):
     return name.replace('_', ' ').title().replace(' ', '')[:-5]
@@ -80,6 +82,7 @@ def init_model(engine):
         print "  Initializing", model.__name__, table_name
         table = Table(table_name, metadata, autoload=True)
         mapper(model, table)
+        models[model.__name__] = model
     print "Done initializing simple models."
 
     for cluster in Cluster.query.all():
@@ -95,6 +98,7 @@ def init_model(engine):
                 mapper(obj, table)
                 per_cluster_models_d[model_name] = obj
                 per_cluster_models.append(obj)
+                models[model_name] = obj
             except sqlalchemy.exc.ArgumentError as e:
                 print "** Failed to init", model_name, table_name
                 print str(e)

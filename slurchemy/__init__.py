@@ -30,6 +30,7 @@ def init_model(engine):
 from slurchemy.reflect import (
     AccountCoord, Account, TableDefinition,
     Cluster, QOS, User, TXN,
+    models,
     per_cluster_models,
     per_cluster_models_d,
 )
@@ -37,6 +38,7 @@ from slurchemy.reflect import (
 __all__ = [
     AccountCoord, Account, TableDefinition,
     Cluster, User, TXN, QOS,
+    models,
     per_cluster_models,
     per_cluster_models_d,
     DBSession, init_model
