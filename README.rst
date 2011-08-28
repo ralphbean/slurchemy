@@ -40,4 +40,9 @@ Then in python you can do::
     slurchemy.init_model(engine)
     clusters = slurchemy.Cluster.query.all()
 
+TODO
+----
 
+ - MySQL -> sqlite utility
+ - `_time` -> datetime casting
+ - Builtin statistics queries
