@@ -43,6 +43,7 @@ Then in python you can do::
 TODO
 ----
 
+ - Better logging
  - MySQL -> sqlite utility
  - `_time` -> datetime casting
  - Builtin statistics queries
