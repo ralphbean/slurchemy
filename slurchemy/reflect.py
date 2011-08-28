@@ -32,7 +32,18 @@ per_cluster_suffixes = [
 
 per_cluster_models_d = {}
 per_cluster_models = []
-models = {}
+
+class models(object):
+    """ API access to models.
+
+    Use like::
+
+        import slurchemy
+        print slurchemy.models.Cluster.query.count()
+        print slurchemy.models.TestclusterUsageDay.query.all()
+
+    """
+    pass
 
 
 class AccountCoord(Base):
@@ -82,7 +93,7 @@ def init_model(engine):
         print "  Initializing", model.__name__, table_name
         table = Table(table_name, metadata, autoload=True)
         mapper(model, table)
-        models[model.__name__] = model
+        setattr(models, model.__name__, model)
     print "Done initializing simple models."
 
     for cluster in Cluster.query.all():
@@ -98,7 +109,7 @@ def init_model(engine):
                 mapper(obj, table)
                 per_cluster_models_d[model_name] = obj
                 per_cluster_models.append(obj)
-                models[model_name] = obj
+                setattr(models, model_name, obj)
             except sqlalchemy.exc.ArgumentError as e:
                 print "** Failed to init", model_name, table_name
                 print str(e)
