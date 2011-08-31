@@ -19,12 +19,12 @@ class Base(object):
 Base.query = DBSession.query_property()
 
 
-def init_model(engine):
+def init_model(engine, quiet=False):
     """Call me before using any of the tables or classes in the model."""
 
     import slurchemy.reflect
     DBSession.configure(bind=engine)
-    slurchemy.reflect.init_model(engine)
+    slurchemy.reflect.init_model(engine, quiet)
 
 
 from slurchemy.reflect import (

@@ -83,26 +83,32 @@ mappings = [
 def tablename2CamelCase(name):
     return name.replace('_', ' ').title().replace(' ', '')[:-5]
 
-def init_model(engine):
-    print "Initializing models."
+
+def log(msg, quiet):
+    if not quiet:
+        print "[slurchemy]", msg
+
+
+def init_model(engine, quiet=False):
+    log("Initializing models.", quiet)
     from sqlalchemy import MetaData, Column, Table
     from sqlalchemy.orm import mapper
 
     metadata = MetaData(engine.url)
     for model, table_name in mappings:
-        print "  Initializing", model.__name__, table_name
+        log("  Initializing %s %s" % (model.__name__, table_name), quiet)
         table = Table(table_name, metadata, autoload=True)
         mapper(model, table)
         setattr(models, model.__name__, model)
-    print "Done initializing simple models."
+    log("Done initializing simple models.", quiet)
 
     for cluster in Cluster.query.all():
         clustername = cluster.name
-        print "Initializing models for cluster", clustername
+        log("Initializing models for cluster %s" % clustername, quiet)
         for suffix in per_cluster_suffixes:
             table_name = clustername + '_' + suffix
             model_name = tablename2CamelCase(table_name)
-            print "  Initializing",model_name,table_name
+            log("  Initializing %s %s" % (model_name, table_name), quiet)
             obj = type(model_name, (Base,), {})
             try:
                 table = Table(table_name, metadata,autoload=True)
@@ -111,5 +117,5 @@ def init_model(engine):
                 per_cluster_models.append(obj)
                 setattr(models, model_name, obj)
             except sqlalchemy.exc.ArgumentError as e:
-                print "** Failed to init", model_name, table_name
-                print str(e)
+                log("** Failed to init %s %s" % (model_name, table_name), quiet)
+                log(str(e), quiet)
