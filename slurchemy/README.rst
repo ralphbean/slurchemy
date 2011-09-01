@@ -44,5 +44,4 @@ TODO
 ----
 
  - Better logging
- - `_time` -> datetime casting
  - Builtin statistics queries
