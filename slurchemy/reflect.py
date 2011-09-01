@@ -9,6 +9,7 @@ from sqlalchemy.types import Integer, Unicode, DateTime
 from sqlalchemy.orm import relation, backref
 
 from slurchemy import Base
+import slurchemy.utils
 
 per_cluster_suffixes = [
     'assoc_table',
@@ -99,6 +100,7 @@ def init_model(engine, quiet=False):
         log("  Initializing %s %s" % (model.__name__, table_name), quiet)
         table = Table(table_name, metadata, autoload=True)
         mapper(model, table)
+        slurchemy.utils.add_datetime_properties(model)
         setattr(models, model.__name__, model)
     log("Done initializing simple models.", quiet)
 
@@ -113,6 +115,7 @@ def init_model(engine, quiet=False):
             try:
                 table = Table(table_name, metadata,autoload=True)
                 mapper(obj, table)
+                slurchemy.utils.add_datetime_properties(model)
                 per_cluster_models_d[model_name] = obj
                 per_cluster_models.append(obj)
                 setattr(models, model_name, obj)
