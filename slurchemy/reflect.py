@@ -8,6 +8,14 @@ from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode, DateTime
 from sqlalchemy.orm import relation, backref
 
+import twiggy
+
+# TODO -- should this be here?
+twiggy.quickSetup()
+
+from twiggy import log
+
+
 from slurchemy import Base
 import slurchemy.utils
 
@@ -84,33 +92,27 @@ mappings = [
 def tablename2CamelCase(name):
     return name.replace('_', ' ').title().replace(' ', '')[:-5]
 
-
-def log(msg, quiet):
-    if not quiet:
-        print "[slurchemy]", msg
-
-
-def init_model(engine, quiet=False):
-    log("Initializing models.", quiet)
+def init_model(engine):
+    log.info("Initializing models.")
     from sqlalchemy import MetaData, Column, Table
     from sqlalchemy.orm import mapper
 
     metadata = MetaData(engine.url)
     for model, table_name in mappings:
-        log("  Initializing %s %s" % (model.__name__, table_name), quiet)
+        log.info("  Initializing %s %s" % (model.__name__, table_name))
         table = Table(table_name, metadata, autoload=True)
         mapper(model, table)
         slurchemy.utils.add_datetime_properties(model)
         setattr(models, model.__name__, model)
-    log("Done initializing simple models.", quiet)
+    log.info("Done initializing simple models.")
 
     for cluster in Cluster.query.all():
         clustername = cluster.name
-        log("Initializing models for cluster %s" % clustername, quiet)
+        log.info("Initializing models for cluster %s" % clustername)
         for suffix in per_cluster_suffixes:
             table_name = clustername + '_' + suffix
             model_name = tablename2CamelCase(table_name)
-            log("  Initializing %s %s" % (model_name, table_name), quiet)
+            log.info("  Initializing %s %s" % (model_name, table_name))
             obj = type(model_name, (Base,), {})
             try:
                 table = Table(table_name, metadata,autoload=True)
@@ -120,5 +122,5 @@ def init_model(engine, quiet=False):
                 per_cluster_models.append(obj)
                 setattr(models, model_name, obj)
             except sqlalchemy.exc.ArgumentError as e:
-                log("** Failed to init %s %s" % (model_name, table_name), quiet)
-                log(str(e), quiet)
+                log.trace('error').warning("Failed to init %s %s" % (
+                    model_name, table_name))

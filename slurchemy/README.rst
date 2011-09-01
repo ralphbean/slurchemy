@@ -43,5 +43,4 @@ Then in python you can do::
 TODO
 ----
 
- - Better logging
  - Builtin statistics queries
