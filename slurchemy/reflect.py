@@ -71,7 +71,10 @@ class Cluster(Base):
         return super(Cluster, self).__unicode__()
 
 class QOS(Base):
-    pass
+    def __unicode__(self):
+        if hasattr(self, 'name'):
+            return unicode(self.name)
+        return super(Cluster, self).__unicode__()
 
 class User(Base):
     pass
