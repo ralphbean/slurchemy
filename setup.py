@@ -1,9 +1,9 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1.6'
+version = '0.1.7'
 
-with open(os.sep.join(__file__.split(os.sep)[:-1] + ["README.rst"])) as f:
+with open(os.sep.join(__file__.split(os.sep)[:-1] + ["slurchemy/README.rst"])) as f:
     long_description = f.read().split(".. split here")[1]
 
 
