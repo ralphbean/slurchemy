@@ -116,14 +116,14 @@ def init_model(engine):
             table_name = clustername + '_' + suffix
             model_name = tablename2CamelCase(table_name)
             log.info("  Initializing %s %s" % (model_name, table_name))
-            obj = type(model_name, (Base,), {})
+            cls = type(model_name, (Base,), {})
             try:
                 table = Table(table_name, metadata,autoload=True)
-                mapper(obj, table)
+                mapper(cls, table)
                 slurchemy.utils.add_datetime_properties(model)
-                per_cluster_models_d[model_name] = obj
-                per_cluster_models.append(obj)
-                setattr(models, model_name, obj)
+                per_cluster_models_d[model_name] = cls
+                per_cluster_models.append(cls)
+                setattr(models, model_name, cls)
             except sqlalchemy.exc.ArgumentError as e:
                 log.trace('error').warning("Failed to init %s %s" % (
                     model_name, table_name))
