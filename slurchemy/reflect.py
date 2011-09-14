@@ -6,7 +6,7 @@ from sqlalchemy import *
 from sqlalchemy.orm import mapper, relation
 from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode, DateTime
-from sqlalchemy.orm import relation, backref
+from sqlalchemy.orm import relation, backref, class_mapper
 
 import twiggy
 
@@ -127,3 +127,52 @@ def init_model(engine):
             except sqlalchemy.exc.ArgumentError as e:
                 log.trace('error').warning("Failed to init %s %s" % (
                     model_name, table_name))
+
+        log.info("Initializing foreign relations on cluster %s" % clustername)
+
+        assoc_model = per_cluster_models_d[
+            tablename2CamelCase(clustername + "_assoc_table")
+        ]
+        assoc_table = class_mapper(assoc_model).tables[0]
+
+        class_mapper(Account).add_property('%s_users' % clustername, relation(
+            User,
+            primaryjoin=Account.name==assoc_model.acct,
+            secondaryjoin=assoc_model.user==User.name,
+            secondary=assoc_table,
+            backref=backref('%s_accounts' % clustername)
+        ))
+        class_mapper(Account).add_property(
+            '%s_associations' % clustername, relation(
+                assoc_model,
+                primaryjoin=Account.name==assoc_model.acct,
+                secondaryjoin=assoc_model.acct==Account.name,
+                secondary=assoc_table,
+                backref=backref('accounts')
+            )
+        )
+
+        # TODO -- this needs to be fixed in el futuro
+
+        ## XXX -- This is what we would *like* to do, but the slurmdb is set up
+        ## so that QOSes are listed as a comma-separated list instead of
+        ## separate foreign key entries.
+#        class_mapper(Account).add_property('%s_QOSes' % clustername, relation(
+#            QOS,
+#            primaryjoin=Account.name==assoc_model.acct,
+#            secondaryjoin=assoc_model.qos==QOS.id,
+#            secondary=assoc_table,
+#            backref=backref('%s_accounts' % clustername)
+#        ))
+        # Instead we'll do the following --
+
+        def getx(self):
+            qos_ids = []
+            for assoc in getattr(self, '%s_associations' % clustername):
+                qos_ids.extend(assoc.qos.split(','))
+
+            qos_ids = [qid for qid in qos_ids if qid]
+
+            return [QOS.query.filter(QOS.id==qid).one()  for qid in qos_ids]
+
+        setattr(Account, '%s_QOSes' % clustername, property(getx))
