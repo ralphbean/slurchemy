@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.2.1'
+version = '0.2.2'
 
 fname = os.sep.join(__file__.split(os.sep)[:-1] + ["slurchemy/README.rst"])
 f = open(fname, 'r')
@@ -32,7 +32,6 @@ setup(name='slurchemy',
       include_package_data=True,
       zip_safe=False,
       install_requires=[
-          "ipython",
           "MySQL-python",
           "sqlalchemy",
           "zope.sqlalchemy",
