@@ -9,8 +9,7 @@ from sqlalchemy.types import Integer, Unicode, DateTime
 from sqlalchemy.orm import relation, backref, class_mapper
 
 import warnings
-warnings.catch_warnings()
-warnings.simplefilter("ignore")
+warnings.filterwarnings("ignore")
 
 import logging as log
 
