@@ -124,7 +124,7 @@ def init_model(engine):
                 per_cluster_models_d[model_name] = cls
                 per_cluster_models.append(cls)
                 setattr(models, model_name, cls)
-            except sqlalchemy.exc.ArgumentError as e:
+            except sqlalchemy.exc.ArgumentError, e:
                 log.trace('error').warning("Failed to init %s %s" % (
                     model_name, table_name))
 
