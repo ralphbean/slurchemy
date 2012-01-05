@@ -8,8 +8,11 @@ from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode, DateTime
 from sqlalchemy.orm import relation, backref, class_mapper
 
-from logging import Logger
-log = Logger("slurchemy")
+import warnings
+warnings.catch_warnings()
+warnings.simplefilter("ignore")
+
+import logging as log
 
 from slurchemy import Base
 import slurchemy.utils
