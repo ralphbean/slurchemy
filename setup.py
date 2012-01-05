@@ -36,7 +36,6 @@ setup(name='slurchemy',
           "MySQL-python",
           "sqlalchemy",
           "zope.sqlalchemy",
-          "twiggy",
       ],
       entry_points="""
       # -*- Entry points: -*-

@@ -8,13 +8,8 @@ from sqlalchemy import Table, ForeignKey, Column
 from sqlalchemy.types import Integer, Unicode, DateTime
 from sqlalchemy.orm import relation, backref, class_mapper
 
-import twiggy
-
-# TODO -- should this be here?
-twiggy.quickSetup()
-
-from twiggy import log
-
+from logging import Logger
+log = Logger("slurchemy")
 
 from slurchemy import Base
 import slurchemy.utils
@@ -125,8 +120,9 @@ def init_model(engine):
                 per_cluster_models.append(cls)
                 setattr(models, model_name, cls)
             except sqlalchemy.exc.ArgumentError, e:
-                log.trace('error').warning("Failed to init %s %s" % (
+                log.warning("Failed to init %s %s" % (
                     model_name, table_name))
+                print str(e)
 
         log.info("Initializing foreign relations on cluster %s" % clustername)
 
