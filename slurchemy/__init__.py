@@ -44,5 +44,7 @@ __all__ = [
     DBSession, init_model
 ]
 
-with open(os.sep.join(__file__.split(os.sep)[:-1] + ["README.rst"])) as f:
-    __doc__ = f.read().split(".. split here")[1]
+fname = os.sep.join(__file__.split(os.sep)[:-1] + ["README.rst"])
+f = open(fname, 'r')
+__doc__ = f.read().split(".. split here")[1]
+f.close()

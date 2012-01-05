@@ -1,10 +1,12 @@
 from setuptools import setup, find_packages
 import sys, os
 
-version = '0.1.9'
+version = '0.2.0'
 
-with open(os.sep.join(__file__.split(os.sep)[:-1] + ["slurchemy/README.rst"])) as f:
-    long_description = f.read().split(".. split here")[1]
+fname = os.sep.join(__file__.split(os.sep)[:-1] + ["slurchemy/README.rst"])
+f = open(fname, 'r')
+long_description = f.read().split(".. split here")[1]
+f.close()
 
 
 setup(name='slurchemy',
