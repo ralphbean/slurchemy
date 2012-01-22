@@ -2,8 +2,10 @@
 
 import os
 from sqlalchemy.orm import scoped_session, sessionmaker, class_mapper
+from zope.sqlalchemy import ZopeTransactionExtension
 
-maker = sessionmaker(autoflush=False, autocommit=False)
+maker = sessionmaker(autoflush=False, autocommit=False,
+                     extension=ZopeTransactionExtension())
 DBSession = scoped_session(maker)
 
 class Base(object):
