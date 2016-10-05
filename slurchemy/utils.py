@@ -35,11 +35,11 @@ def add_datetime_properties(cls):
 
         key = prop.key
 
-        def getx(self):
+        def getx(self, key=key):
             return datetime.datetime.fromtimestamp(
                 float(getattr(self, key)))
 
-        def setx(self, x):
+        def setx(self, x, key=key):
             setattr(self, key, time.mktime(x.timetuple()))
 
         datetime_key = key.replace('_time', '_datetime')
